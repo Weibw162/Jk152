@@ -5,7 +5,10 @@
 [项目演示地址](http://jk152.veisearch.com/)
 
 登录界面：
-
-
+![Image text](https://github.com/Weibw162/Jk152/blob/master/static/readme_img/login.PNG)
 
 相册界面：
+![Image text](https://github.com/Weibw162/Jk152/blob/master/static/readme_img/show.PNG)
+
+测试账户：wei
+测试密码：123456
