@@ -1,0 +1,167 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>辽科大计科152</title>
+</head>
+<link rel="stylesheet" type="text/css" href="{% static '/font-awesome-4.7.0/css/font-awesome.min.css' %}"/>
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js">
+</script>
+<style>
+    body {
+        text-align: center;
+    }
+
+    img {
+        background-size: cover;
+        width: 100%;
+        height: auto;
+    }
+
+    .fa-gratipay {
+        color: cornflowerblue;
+    }
+
+    .like.active {
+        color: red;
+    }
+
+    #like {
+        margin-top: 50px;
+        line-height: 200px;
+        font-size: 100px;
+    }
+
+    label {
+        color: cornflowerblue;
+        font-size: 50px;
+    }
+
+    #btn-list {
+        margin-top: 20px;
+    }
+
+    button {
+        margin-left: 10px;
+        margin-top: 10px;
+        width: 100px;
+        height: 60px;
+        font-size: 18px;
+        background-color: rgba(100, 249, 137, 0.5);
+        border: solid 1px cornflowerblue;
+        border-radius: 5px;
+        outline-style: none;
+    }
+
+    button.active {
+        background-color: rgba(100, 149, 237, 0.8);
+        width: 200px;
+        height: 120px;
+    }
+
+    .btn-i {
+        display: none;
+    }
+
+    .btn-i.active {
+        color: red;
+        display: inline-block;
+    }
+
+</style>
+<body>
+<div>
+    <img src="/static/jk_img/jk152YS/IMG%20({{ img_id }}).jpg">
+    {% if like == 1 %}
+        <a id="like">
+            <i class="fa fa-gratipay like active" aria-hidden="true"></i>
+        </a><br>
+        <label>U have like it!</label><br>
+    {% elif like == 0 %}
+        <a id="like">
+            <i class="fa fa-gratipay like" aria-hidden="true"></i>
+        </a><br>
+        <label>If U like it, like it !</label><br>
+    {% endif %}
+    <p id="like-count">You already like {{ like_count }} pictures</p>
+
+
+    <div id="btn-list">
+        {% for img in img_count %}
+
+            {% if forloop.counter == img_id %}
+                <button class="active">{{ forloop.counter }}
+                    {% if img in like_list %}
+                        <i class="fa fa-gratipay btn-i active" aria-hidden="true" id="btn_{{ forloop.counter }}"></i>
+                    {% else %}
+                        <i class="fa fa-gratipay btn-i" aria-hidden="true" id="btn_{{ forloop.counter }}"></i>
+                    {% endif %}
+                </button>
+            {% else %}
+                <button>{{ forloop.counter }}
+                    {% if img in like_list %}
+                        <i class="fa fa-gratipay btn-i active" aria-hidden="true" id="btn_{{ forloop.counter }}"></i>
+                    {% else %}
+                        <i class="fa fa-gratipay btn-i" aria-hidden="true" id="btn_{{ forloop.counter }}"></i>
+                    {% endif %}
+                </button>
+            {% endif %}
+
+
+        {% endfor %}
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $("button").click(function () {
+            var img_id = $(this).text();
+            window.location.href = "/show/" + img_id;
+        });
+        $("#like").click(function () {
+            var patt = /show\/\d+/;
+            var patt2 = /\d+/;
+            var img_id = patt.exec(window.location.href)[0].substring(5);
+            var like_count_now = parseInt(patt2.exec($("#like-count").text()));
+            var like_count_add = like_count_now + 1;
+            var like_count_sub = like_count_now - 1;
+            $.ajax({
+
+                url: "/like/" + img_id,
+                async: false,
+                type: 'POST',
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                success: function (rep) {
+
+                    if (rep == "1") {
+                        $('.like').addClass("active");
+                        $('label').text("U have like it!");
+                        $('#btn_' + img_id).addClass("active");
+                        $("#like-count").text("You already like "+like_count_add+
+                        " pictures"
+                    );
+                    }
+                    else if (rep == "0") {
+                        $('.like').removeClass("active");
+                        $('label').text("If U like it, like it !");
+                        $('#btn_' + img_id).removeClass("active");
+                        $("#like-count").text("You already like "+like_count_sub+
+                        " pictures"
+                    );
+                    }
+                    else {
+                        alert("不要太贪心，喜欢50个已经很花心了！")
+                    }
+
+                }
+            });
+        });
+    });
+
+
+</script>
+</body>
+</html>

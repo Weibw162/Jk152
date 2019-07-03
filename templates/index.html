@@ -1,0 +1,57 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>辽科大计科152</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js">
+</script>
+    <style>
+        body{
+            text-align: center;
+            background-color: aliceblue;
+        }
+        #login-div{
+            width: 600px;
+            text-align: center;
+            margin: 0 auto;
+            margin-top: 50%;
+        }
+        label{
+            font-size: 30px;
+            color: green;
+        }
+        input{
+            width: 500px;
+            height: 50px;
+            margin-top: 20px;
+            padding-left: 20px;
+            border: solid green 1px;
+            border-radius: 5px;
+            font-size: 20px;
+        }
+        button{
+            margin-top: 20px;
+            width: 150px;
+            height: 60px;
+            background-color: rgba(255,255,255,0);
+            color: green;
+            border: solid 1px green;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+<div id="login-div">
+    <form method="POST" action="/login/">
+        {% csrf_token %}
+        <label>Jk152</label><br>
+        <input type="text" placeholder="用户名，填你的名字" name="username"><br>
+        <input type="password" placeholder="密码，填你的学号" name="password"><br>
+        <button type="submit">登录</button>
+    </form>
+</div>
+
+</body>
+</html>
